@@ -25,8 +25,8 @@ class LongProfile(object):
         self.sinuosity = 1.
         self.intermittency = 0.01
         self.t = 0
-        self.upstream_segment_IDs = None
-        self.downstream_segment_IDs = None
+        self.upstream_segment_IDs = []
+        self.downstream_segment_IDs = []
         self.ID = None
         #self.downstream_dx = None # not necessary if x_ext given
         #self.basic_constants()
@@ -119,7 +119,7 @@ class LongProfile(object):
             self.x = x_ext[1:-1]
             diff = np.diff(self.x_ext)
             dx_mean = np.mean(diff)
-            print (diff == dx_mean).all()
+            print ((diff == dx_mean).all())
             if (diff == dx_mean).all():
                 self.dx_ext = dx_mean
                 self.dx_isscalar = True
@@ -156,7 +156,7 @@ class LongProfile(object):
         elif self.x.any() and self.x_ext.any() and (S0 is not None):
             self.z = self.x * S0 + (z1 - self.x[-1] * S0)
             self.z_ext = self.x_ext * S0 + (z1 - self.x[-1] * S0)
-            print self.z_ext
+            print(self.z_ext)
         else:
             sys.exit("Error defining variable")
         #self.dz = self.z_ext[2:] - self.z_ext[:-2] # dz over 2*dx!
@@ -362,7 +362,7 @@ class LongProfile(object):
             for i in range(self.niter):
                 self.build_matrices()
                 self.z_ext[1:-1] = spsolve(self.LHSmatrix, self.RHS)
-                print self.bcl
+                print (self.bcl)
             self.t += self.dt
             self.z = self.z_ext[1:-1].copy()
             self.dz_dt = (self.z - self.zold)/self.dt
@@ -410,7 +410,7 @@ class LongProfile(object):
         # Apply boundary conditions if the segment is at the edges of the
         # network (both if there is only one segment!)
         if len(self.upstream_segment_IDs) == 0:
-            print self.dx_ext_2cell
+            # print (self.dx_ext_2cell)
             self.set_bcl_Neumann_LHS()
             self.set_bcl_Neumann_RHS()
         else:
@@ -481,7 +481,7 @@ class LongProfile(object):
             * abs(self.k_a * self.P_a)**(1/6.) \
             * self.k_xQ / self.k_xB
         P = self.P_xQ - self.P_xB + (self.P_xB - 1.)/6.
-        print P
+        print (P)
         # Constants of integration
         #c1 = self.U * (x0**(P+2) - x1**(P+2)) / (K*(P-2)*(self.P_a + P - 2) \
         #     + (x1**self.P_a - x0**self.P_a) / self.P_a
@@ -516,9 +516,9 @@ class LongProfile(object):
         self.ks = 10.**out.intercept
         self.thetaR2 = out.rvalue**2.
         if verbose:
-            print "Concavity = ", self.theta
-            print "k_s = ", self.ks
-            print "R2 = ", out.rvalue**2.
+            print ("Concavity = ", self.theta)
+            print ("k_s = ", self.ks)
+            print ("R2 = ", out.rvalue**2.)
         
 class Network(object):
     """
@@ -624,7 +624,7 @@ class Network(object):
                     lp_upstream = np.array(self.list_of_LongProfile_objects) \
                                     [self.IDs == ID]
                     lp.z_ext[0] = np.nan
-            print lp.z_ext
+            print (lp.z_ext)
 
     def evolve_threshold_width_river_network(self, nt=1, dt=3.15E7):
         """

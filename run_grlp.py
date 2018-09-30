@@ -1,8 +1,10 @@
+import matplotlib
+matplotlib.use('agg')
 import numpy as np
 from matplotlib import pyplot as plt
 
 import grlp
-reload(grlp)
+# reload(grlp)
 
 S0 = 1E-2
 P_xB = 0.8
@@ -40,3 +42,4 @@ plt.xlabel('Downstream distance [km]', fontsize=26)
 plt.ylabel('Elevation [m]', fontsize=26)
 plt.tick_params(axis='both', which='major', labelsize=16)
 plt.tight_layout()
+plt.savefig('test.png')
